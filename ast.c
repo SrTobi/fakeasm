@@ -81,6 +81,12 @@ bool ast_resolve_funcalls(Function* fun)
                 Argument* arg = &llist_head(ap);
                 Variable* param = llist_head(pp);
                 
+                if(arg->wasexpr && param->type != vt_outint)
+                {
+                    ok = false;
+                    printf("Error: Expected parameter %i of function '%s' to output something, in order to be used as expression in function '%s'\n", i, s->funname, fun->name);
+                }
+                
                 switch(arg->type)
                 {
                     case at_iconst:

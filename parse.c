@@ -141,6 +141,7 @@ Argument create_unary_arg(const char* funname, Argument input)
     Statement* s = push_funcall(funname, arguments);
     s->wasexpr = true;
     
+    output.wasexpr = false;
     return output;
 }
 
@@ -153,5 +154,6 @@ Argument create_binary_arg(const char* funname, Argument left, Argument right)
     Statement* s = push_funcall(funname, arguments);
     s->wasexpr = true;
     
+    output.wasexpr = false;
     return output;
 }
