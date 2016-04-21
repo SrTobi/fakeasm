@@ -2,9 +2,12 @@ main:
     add a, b, c
     mov a, b
     sub [[x mul y] add (min e)], 4
+    add [3 <== 3]
+    
+    mov (- [a * b]), b
+    
 
-
-def test: a, b, @c
+def test: a, b, c:
 
     goto ret
 ret

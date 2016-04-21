@@ -11,7 +11,7 @@
 DIGIT       [0-9]
 ALPHA       [a-zA-Z]
 ALPHANUM    [a-zA-Z0-9]
-
+SIGN        [=<>/\\\.!?^~\-|$+*%'&]
 
 %%
 [ \t]               ;
@@ -24,12 +24,12 @@ ALPHANUM    [a-zA-Z0-9]
 ")"                 { return RB; }
 "["                 { return LBE; }
 "]"                 { return RBE; }
-"*"                 { STAR; }
 \n                  { return EOL; }
 <<EOF>>             { bool end = myended; myended = true; return (end? YY_NULL : EOL); }
 {DIGIT}+            { yylval.ival = atoi(yytext); return ICONST; }
 ";".*               { };
 
 {ALPHA}{ALPHANUM}*  { yylval.sval = strdup(yytext); return ID; }
+({SIGN}|{ALPHA})({ALPHANUM}|{SIGN})* { yylval.sval = strdup(yytext); return FUNCID; }
 .                   { yyerror("Unknown char"); }
 %%

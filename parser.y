@@ -15,8 +15,8 @@
 // define the "terminal symbol" token types I'm going to use (in CAPS
 // by convention), and associate each with a field of the union:
 %token <ival> ICONST
-%token <sval> ID
-%token EOL COMMA COLON AT RET DEF STAR LB RB LBE RBE
+%token <sval> ID FUNCID
+%token EOL COMMA COLON AT RET DEF LB RB LBE RBE
 
 
 %%
@@ -41,7 +41,7 @@ statement:
 	;
 	
 funcall:
-	ID arglist EOL	{ push_funcall($1, $2); }
+	funcid arglist EOL	{ push_funcall($1, $2); }
 	;
 
 %type <arglist> arglist args;
@@ -62,8 +62,8 @@ arg:
 	;
 
 expr:
-	LB ID arg RB				{ $$ = create_unary_arg($2, $3); }
-	| LBE arg ID arg RBE		{ $$ = create_binary_arg($3, $2, $4); }
+	LB funcid arg RB				{ $$ = create_unary_arg($2, $3); }
+	| LBE arg funcid arg RBE		{ $$ = create_binary_arg($3, $2, $4); }
 	;
 
 atomexpr:
@@ -77,7 +77,7 @@ label:
 	;
 
 fundef:
-	DEF ID COLON
+	DEF funcid COLON
 	paramlist EOL	{ push_function($2, $4);}
 	fbody
 	RET EOL			{ pop_function(); }
@@ -96,9 +96,14 @@ params:
 
 %type <variable> param;
 param:
-	AT ID		{ $$ = create_parameter($2, vt_label); }
-	| STAR ID	{ $$ = create_parameter($2, vt_outint); }
+	ID COLON	{ $$ = create_parameter($1, vt_label); }
+	| AT ID		{ $$ = create_parameter($2, vt_outint); }
 	| ID		{ $$ = create_variable($1); }
 	;	
 
+%type <sval> funcid;
+funcid:
+	FUNCID
+	| ID
+	;
 %%
