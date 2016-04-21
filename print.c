@@ -28,12 +28,13 @@ void print_vars(VarList vars, bool printtypes)
 
 void print_fullfuncname(Function* fun)
 {
-    printf("%s", fun->name);
     if(fun->context != NULL)
     {
-        printf("::");
         print_fullfuncname(fun->context);
+        printf("::");        
     }
+    
+    printf("%s", fun->name);
 }
 
 void print_function(Function* fun, unsigned int flags)
