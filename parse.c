@@ -18,6 +18,18 @@ void push_function(const char* name, VarList params)
     if(funstack != llist_empty)
     {
         context = llist_head(funstack);
+        
+        Function* otherf;
+        llist_foreach(FunList, context->funcs, otherf)
+        {
+            if(strcmp(otherf->name, name) == 0)
+            {
+                char buf[512];
+                sprintf(buf, "A function with the name '%s' has already been defined in function '%s'.", name, context->name);
+                yyerror(buf);
+            }
+        }
+        
         context->funcs = llist_prepend(f, context->funcs);
     }
     f->context = context;
@@ -38,12 +50,26 @@ Function* cur_func()
 
 void push_label(const char* name)
 {
-    Label* l = malloc(sizeof(*l));
+    Function* curf = cur_func();
+    
+    // check if label already exists
+    Label* l;
+    llist_foreach(LabelList, curf->labels, l)
+    {
+        if(strcmp(l->name, name) == 0)
+        {
+            char buf[512];
+            sprintf(buf, "A label with the name '%s' has already been defined in function '%s'.", name, curf->name);
+            yyerror(buf);
+        }
+    }
+    
+    
+    l = malloc(sizeof(*l));
     l->name = name;
     l->statm = NULL;
     curlabels = llist_prepend(l, curlabels);
     
-    Function* curf = cur_func();
     curf->labels = llist_prepend(l, curf->labels);
 }
 
