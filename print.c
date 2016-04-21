@@ -105,7 +105,8 @@ void print_function(Function* fun, unsigned int flags)
         Function* f;
         llist_foreach(FunList, fun->funcs, f)
         {
-            print_function(f, flags);
+            if(!f->internal || (flags & pf_print_internals))
+                print_function(f, flags);
         }
     }
 }

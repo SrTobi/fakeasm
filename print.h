@@ -11,6 +11,7 @@ enum print_flags {
     pf_fullfuncname = 0x10,
     pf_param_types = 0x20,
     pf_var_types = 0x40,
+    pf_print_internals = 0x80,
     
     pf_all = pf_recfunc | pf_labels | pf_statments | pf_variables | pf_fullfuncname | pf_param_types | pf_var_types
 };
