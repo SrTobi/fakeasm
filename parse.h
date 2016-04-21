@@ -12,6 +12,8 @@ Variable* create_parameter(const char* name, VarType vartype);
 void push_funcall(const char* funname, ArgList args);
 Argument create_iconst_arg(int val);
 Argument create_label_or_var_arg(const char* name);
+Argument create_unary_arg(const char* funname, Argument arg);
+Argument create_binary_arg(const char* funname, Argument left, Argument right);
 
 
 #endif

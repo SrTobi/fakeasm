@@ -16,7 +16,7 @@
 // by convention), and associate each with a field of the union:
 %token <ival> ICONST
 %token <sval> ID
-%token EOL COMMA COLON AT RET DEF STAR
+%token EOL COMMA COLON AT RET DEF STAR LB RB LBE RBE
 
 
 %%
@@ -55,14 +55,23 @@ args:
 	| arg				{ $$ = llist_new(ArgList, $1); }
 	;
 
-%type <argument> arg;
+%type <argument> arg expr atomexpr;
 arg:
+	expr	
+	| atomexpr
+	;
+
+expr:
+	LB ID arg RB				{ $$ = create_unary_arg($2, $3); }
+	| LBE arg ID arg RBE		{ $$ = create_binary_arg($3, $2, $4); }
+	;
+
+atomexpr:
 	ICONST				{ $$ = create_iconst_arg($1); }
 	| ID				{ $$ = create_label_or_var_arg($1); }
 	| RET				{ $$ = create_label_or_var_arg("ret"); }
 	;
 
-	
 label:
 	ID COLON	{ push_label($1); }
 	;

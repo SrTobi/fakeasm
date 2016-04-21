@@ -20,6 +20,10 @@ ALPHANUM    [a-zA-Z0-9]
 ":"                 { return COLON; }
 "@"                 { return AT; }
 ","                 { return COMMA; }
+"("                 { return LB; }
+")"                 { return RB; }
+"["                 { return LBE; }
+"]"                 { return RBE; }
 "*"                 { STAR; }
 \n                  { return EOL; }
 <<EOF>>             { bool end = myended; myended = true; return (end? YY_NULL : EOL); }

@@ -86,6 +86,7 @@ Argument create_iconst_arg(int val)
     Argument arg;
     arg.type = at_iconst;
     arg.arg.iconst = val;
+    arg.wasexpr = false;
     return arg;
 }
 
@@ -94,5 +95,37 @@ Argument create_label_or_var_arg(const char* name)
     Argument arg;
     arg.type = at_var_or_label;
     arg.arg.refname = name;
+    arg.wasexpr = false;
     return arg;
+}
+
+int tmpvarcounter = 0;
+Argument tmpargument()
+{
+    char* buffer = malloc(16);
+    sprintf(buffer, "tmpv#%03i", tmpvarcounter++);
+    Argument ta = create_label_or_var_arg(buffer);
+    ta.wasexpr = true;
+    return ta;
+}
+
+Argument create_unary_arg(const char* funname, Argument input)
+{
+    Argument output = tmpargument();
+    ArgList arguments = llist_new(ArgList, input);
+    arguments = llist_prepend(output, arguments);
+    push_funcall(funname, arguments);
+    
+    return output;
+}
+
+Argument create_binary_arg(const char* funname, Argument left, Argument right)
+{
+    Argument output = tmpargument();
+    ArgList arguments = llist_new(ArgList, left);
+    arguments = llist_prepend(right, arguments);
+    arguments = llist_prepend(output, arguments);
+    push_funcall(funname, arguments);
+    
+    return output;
 }

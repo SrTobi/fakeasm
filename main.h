@@ -47,6 +47,7 @@ typedef struct {
         Label* label;
         const char *refname;
     } arg;
+    bool wasexpr;
 } Argument;
 
 struct Function;
