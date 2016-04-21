@@ -1,25 +1,28 @@
 #include "print.h"
 
 
-void print_vars(VarList vars)
+void print_vars(VarList vars, bool printtypes)
 {
     Variable* var;
     llist_foreach(VarList, llist_reverse(vars), var)
     {
         printf("%s", var->name);
-        switch(var->type)
+        if(printtypes)
         {
-        case vt_label: printf("(label)");
+            switch(var->type)
+            {
+            case vt_label: printf("(label)");
+                    break;
+            case vt_outint: printf("(out)");
+                    break;
+            case vt_int:
+            default:
                 break;
-        case vt_outint: printf("(out)");
-                break;
-        case vt_int:
-        default:
-            break;
+            }
         }
         
         if(llist_tail(_idx) != llist_empty)
-            printf(",  ");
+            printf(", ");
     }
 }
 
@@ -44,7 +47,7 @@ void print_function(Function* fun, unsigned int flags)
         printf("Function %s:", fun->name);
     }
     // print params
-    print_vars(fun->params);
+    print_vars(fun->params, flags & pf_param_types);
     printf("\n");
     
     if(flags & pf_labels)
@@ -61,7 +64,7 @@ void print_function(Function* fun, unsigned int flags)
     if(flags & pf_variables)
     {
         printf("-Variables:  ");
-        print_vars(fun->vars);
+        print_vars(fun->vars, flags & pf_var_types);
         printf("\n");
     }
     
