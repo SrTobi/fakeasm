@@ -84,13 +84,14 @@ Variable* create_parameter(const char* name, VarType vartype)
     return v;
 }
 
-void push_funcall(const char* funname, ArgList args)
+Statement* push_funcall(const char* funname, ArgList args)
 {
     Function* curf = cur_func();
     Statement* statm = malloc(sizeof(*statm));
     statm->args = args;
     statm->fun = NULL;
     statm->funname = funname;
+    statm->wasexpr = false;
     
     // set all labels and pop
     while(curlabels != llist_empty)
@@ -101,6 +102,7 @@ void push_funcall(const char* funname, ArgList args)
     
     // register
     curf->statms = llist_prepend(statm, curf->statms);
+    return statm;
 }
 
 Argument create_iconst_arg(int val)
@@ -136,7 +138,8 @@ Argument create_unary_arg(const char* funname, Argument input)
     Argument output = tmpargument();
     ArgList arguments = llist_new(ArgList, input);
     arguments = llist_prepend(output, arguments);
-    push_funcall(funname, arguments);
+    Statement* s = push_funcall(funname, arguments);
+    s->wasexpr = true;
     
     return output;
 }
@@ -147,7 +150,8 @@ Argument create_binary_arg(const char* funname, Argument left, Argument right)
     ArgList arguments = llist_new(ArgList, left);
     arguments = llist_prepend(right, arguments);
     arguments = llist_prepend(output, arguments);
-    push_funcall(funname, arguments);
+    Statement* s = push_funcall(funname, arguments);
+    s->wasexpr = true;
     
     return output;
 }

@@ -61,6 +61,7 @@ typedef struct Statement{
     const char *funname;
     struct Function* fun;
     ArgList args;
+    bool wasexpr;
 } Statement;
 
 llist_decl(Statement*, StatementList);

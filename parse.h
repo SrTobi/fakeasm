@@ -9,7 +9,7 @@ Function* cur_func();
 void push_label(const char* name);
 Variable* create_variable(const char* name);
 Variable* create_parameter(const char* name, VarType vartype);
-void push_funcall(const char* funname, ArgList args);
+Statement* push_funcall(const char* funname, ArgList args);
 Argument create_iconst_arg(int val);
 Argument create_label_or_var_arg(const char* name);
 Argument create_unary_arg(const char* funname, Argument arg);
