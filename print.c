@@ -1,35 +1,67 @@
 #include "print.h"
 
 
-void print_function(Function* fun, unsigned int flags)
+void print_vars(VarList vars)
 {
-    printf("Function %s:", fun->name);
-    // print params
-    Variable* param;
-    llist_foreach(VarList, llist_reverse(fun->params), param)
+    Variable* var;
+    llist_foreach(VarList, llist_reverse(vars), var)
     {
-        printf("  %s", param->name);
-        switch(param->type)
+        printf("%s", var->name);
+        switch(var->type)
         {
         case vt_label: printf("(label)");
                 break;
-        case vt_outint: printf("(inout)");
+        case vt_outint: printf("(out)");
                 break;
         case vt_int:
         default:
             break;
         }
+        
+        if(llist_tail(_idx) != llist_empty)
+            printf(",  ");
     }
+}
+
+void print_fullfuncname(Function* fun)
+{
+    printf("%s", fun->name);
+    if(fun->context != NULL)
+    {
+        printf("::");
+        print_fullfuncname(fun->context);
+    }
+}
+
+void print_function(Function* fun, unsigned int flags)
+{
+    if(flags & pf_fullfuncname)
+    {
+        printf("Function [");
+        print_fullfuncname(fun);
+        printf("]: ");
+    }else{
+        printf("Function %s:", fun->name);
+    }
+    // print params
+    print_vars(fun->params);
     printf("\n");
     
     if(flags & pf_labels)
     {
-        printf("-Labels: ");
+        printf("-Labels:    ");
         Label* l;
         llist_foreach(LabelList, fun->labels, l)
         {
             printf("%s ", l->name);
         }
+        printf("\n");
+    }
+    
+    if(flags & pf_variables)
+    {
+        printf("-Variables:  ");
+        print_vars(fun->vars);
         printf("\n");
     }
     

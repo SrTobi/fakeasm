@@ -15,5 +15,5 @@ ret
 def mov: a, @c
 ret
 
-def +: a, b, c
+def +: a, b, @c
 ret
