@@ -37,7 +37,8 @@ typedef enum {
     at_var_or_label,
     at_var,
     at_iconst,
-    at_label
+    at_label,
+    at_labelref
 } ArgType;
 
 typedef struct {

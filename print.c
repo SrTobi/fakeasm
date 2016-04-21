@@ -54,6 +54,7 @@ void print_function(Function* fun, unsigned int flags)
                     case at_iconst: printf("%i", a.arg.iconst); break;
                     case at_var: printf("%s", a.arg.var->name); break;
                     case at_label: printf("%s(label)", a.arg.label->name); break;
+                    case at_labelref: printf("%s(labelref)", a.arg.var->name); break;
                     case at_var_or_label: printf("%s(unresolved)", a.arg.refname); break;
                 }
             }
