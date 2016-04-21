@@ -1,0 +1,10 @@
+main:
+    add a, b, c
+    mov a, b
+    sub a, 4
+
+
+def test: a, b, @c
+
+    goto ret
+ret
