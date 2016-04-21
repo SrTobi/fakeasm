@@ -2,6 +2,7 @@
 #include "parse.h"
 #include "print.h"
 #include "ast.h"
+#include "predef.h"
 #include <stdarg.h>
 
 int main(int argc, char** argv) {
@@ -22,6 +23,8 @@ int main(int argc, char** argv) {
     push_function("root", llist_empty);
 	Function* root = cur_func();
     
+    register_internals(root);
+   
 	// lex through the input:
 	do {
 		yyparse();

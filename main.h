@@ -75,6 +75,7 @@ typedef struct Function {
     FunList funcs;
     StatementList statms;
     LabelList labels;
+    bool internal;
 } Function;
 
 

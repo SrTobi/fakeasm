@@ -4,7 +4,7 @@ project(fakeasm)
 find_package(BISON)
 find_package(FLEX)
 
-set(SOURCE_FILES main.c llist.c parse.c ast.c print.c)
+set(SOURCE_FILES main.c llist.c parse.c ast.c print.c predef.c)
 
 BISON_TARGET(FAParser parser.y ${CMAKE_CURRENT_BINARY_DIR}/parser.c)
 FLEX_TARGET(FALexer lexer.l  ${CMAKE_CURRENT_BINARY_DIR}/lexer.c)

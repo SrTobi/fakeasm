@@ -12,6 +12,7 @@ void push_function(const char* name, VarList params)
     f->statms = llist_empty;
     f->vars = params;
     f->params = params;
+    f->internal = false;
 
 
     Function* context = NULL;
