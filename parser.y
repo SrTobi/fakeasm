@@ -96,7 +96,7 @@ params:
 
 %type <variable> param;
 param:
-	ID COLON	{ $$ = create_parameter($1, vt_label); }
+	COLON ID	{ $$ = create_parameter($2, vt_label); }
 	| AT ID		{ $$ = create_parameter($2, vt_outint); }
 	| ID		{ $$ = create_variable($1); }
 	;	
