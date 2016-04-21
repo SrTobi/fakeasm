@@ -1,8 +1,8 @@
 #include "main.h"
 #include "parse.h"
 #include "print.h"
+#include "ast.h"
 #include <stdarg.h>
-
 
 int main(int argc, char** argv) {
 
@@ -27,6 +27,7 @@ int main(int argc, char** argv) {
 		yyparse();
 	} while (!feof(yyin));
 
+    ast_analyze(root);
     print_function(root, pf_all);
     
     return 0;
