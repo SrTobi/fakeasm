@@ -1,6 +1,7 @@
 #include "main.h"
 #include "parse.h"
 #include "print.h"
+#include <stdarg.h>
 
 
 int main(int argc, char** argv) {
@@ -29,6 +30,16 @@ int main(int argc, char** argv) {
     print_function(root, pf_all);
     
     return 0;
+}
+
+void yyerrerf(const char* format, ...)
+{
+    char buffer[512];
+    va_list args;
+    va_start (args, format);
+    vsnprintf (buffer,512,format, args);
+    yyerror(buffer);
+    va_end (args);
 }
 
 void yyerror(const char *s) {

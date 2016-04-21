@@ -12,6 +12,7 @@ int yylex(void);
 int yyparse(void);
 FILE *yyin;
 
+void yyerrerf(const char*s, ...);
 void yyerror(const char *s);
 
 typedef enum {

@@ -24,9 +24,7 @@ void push_function(const char* name, VarList params)
         {
             if(strcmp(otherf->name, name) == 0)
             {
-                char buf[512];
-                sprintf(buf, "A function with the name '%s' has already been defined in function '%s'.", name, context->name);
-                yyerror(buf);
+                yyerrerf("A function with the name '%s' has already been defined in function '%s'.", name, context->name);
             }
         }
         
@@ -58,9 +56,7 @@ void push_label(const char* name)
     {
         if(strcmp(l->name, name) == 0)
         {
-            char buf[512];
-            sprintf(buf, "A label with the name '%s' has already been defined in function '%s'.", name, curf->name);
-            yyerror(buf);
+            yyerrerf("A label with the name '%s' has already been defined in function '%s'.", name, curf->name);
         }
     }
     
