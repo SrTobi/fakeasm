@@ -41,10 +41,13 @@ void *_llist_impl_reverse(void *list, int listsize)
 
 int llist_size(void *list)
 {
-        dummyl l = list;
+    dummyl l = list;
     int size = 0;
     while(l != llist_empty)
+    {
         ++size;
+        l = llist_tail(l);
+    }
     
     return size;
 }
