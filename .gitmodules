@@ -1,0 +1,3 @@
+[submodule "extra/libfirm"]
+	path = extra/libfirm
+	url = http://pp.ipd.kit.edu/git/libfirm.git
