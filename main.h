@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "llist.h"
+#include "strmap.h"
 
 int yylex(void);
 int yyparse(void);
@@ -66,6 +67,7 @@ typedef struct Statement{
 
 llist_decl(Statement*, StatementList);
 llist_decl(Label*, LabelList);
+strmap_decl(Label*, LabelMap);
 
 typedef struct Function {
     const char *name;
@@ -74,7 +76,7 @@ typedef struct Function {
     VarList vars;
     FunList funcs;
     StatementList statms;
-    LabelList labels;
+    LabelMap labels;
     bool internal;
 } Function;
 

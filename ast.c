@@ -40,14 +40,8 @@ Variable* resolve_variable(Function* fun, const char* name)
 
 Label* resolve_label(Function* fun, const char* name)
 {
-    Label* label;
-    llist_foreach(LabelList, fun->labels, label)
-    {
-        if(strcmp(label->name, name) == 0)
-            return label;
-    }
-    
-    return NULL;
+    Label** optL = strmap_find(fun->labels, name);
+    return optL == NULL? NULL : *optL;
 }
 
 bool ast_resolve_funcalls(Function* fun)

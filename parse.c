@@ -8,7 +8,7 @@ void push_function(const char* name, VarList params)
     Function* f = malloc(sizeof(Function));
     f->name = name;
     f->funcs = llist_empty;
-    f->labels = llist_empty;
+    f->labels = new_strmap(Label*, LabelMap);
     f->statms = llist_empty;
     f->vars = params;
     f->params = params;
@@ -52,22 +52,25 @@ void push_label(const char* name)
     Function* curf = cur_func();
     
     // check if label already exists
-    Label* l;
-    llist_foreach(LabelList, curf->labels, l)
+    Label** foundl = strmap_find(curf->labels, name);
+    if(foundl != NULL)
+        yyerrerf("A label with the name '%s' has already been defined in function '%s'.", name, curf->name);
+    
+    /*llist_foreach(LabelList, curf->labels, l)
     {
         if(strcmp(l->name, name) == 0)
         {
-            yyerrerf("A label with the name '%s' has already been defined in function '%s'.", name, curf->name);
+            
         }
-    }
+    }*/    
     
-    
-    l = malloc(sizeof(*l));
+    Label* l = malloc(sizeof(*l));
     l->name = name;
     l->statm = NULL;
     curlabels = llist_prepend(l, curlabels);
     
-    curf->labels = llist_prepend(l, curf->labels);
+    strmap_insert(curf->labels, name, l);
+    //curf->labels = llist_prepend(l, curf->labels);
 }
 
 Variable* create_variable(const char* name)

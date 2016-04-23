@@ -55,7 +55,7 @@ void print_function(Function* fun, unsigned int flags)
     {
         printf("-Labels:    ");
         Label* l;
-        llist_foreach(LabelList, fun->labels, l)
+        strmap_foreach(fun->labels, Label*, l)
         {
             printf("%s ", l->name);
         }

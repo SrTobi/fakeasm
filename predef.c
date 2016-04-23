@@ -5,7 +5,7 @@ Function* new_internal_func(const char* name, Function* context)
     Function* f = malloc(sizeof(Function));
     f->name = name;
     f->funcs = llist_empty;
-    f->labels = llist_empty;
+    f->labels = new_strmap(Label*, LabelMap);
     f->statms = llist_empty;
     f->vars = llist_empty;
     f->params = llist_empty;

@@ -26,7 +26,7 @@
                                                 ((map)._item_dummy == NULL ? ((map)._typeptr_dummy = NULL) : &((map)._item_dummy->value))  \
                                             )
 
-#define strmap_foreach(map, type, target)    for (_strmap_item(type) *_idx = set_first(void, map._innerset); _idx == NULL? false : (target = _idx->value, true); _idx = set_next(void, map._innerset))
+#define strmap_foreach(map, type, target)    for (void *_idx = set_first(void, map._innerset); _idx == NULL? false : (target = ((_strmap_item(type)*)_idx)->value, true); _idx = set_next(void, map._innerset))
                                       
 int _strmap_item_cmp(void const* old, void const* newe, size_t size);
 
