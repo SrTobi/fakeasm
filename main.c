@@ -3,6 +3,7 @@
 #include "print.h"
 #include "ast.h"
 #include "predef.h"
+#include "gen.h"
 #include <stdarg.h>
 
 int main(int argc, char** argv) {
