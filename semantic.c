@@ -1,5 +1,5 @@
 #include <assert.h>
-#include "ast.h"
+#include "main.h"
 
 Function* resolve_funcall(Function* fun, const char* name)
 {

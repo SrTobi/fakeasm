@@ -81,5 +81,6 @@ typedef struct Function {
 } Function;
 
 
+void ast_analyze(Function* fun);
 
 #endif

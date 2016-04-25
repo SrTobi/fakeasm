@@ -1,7 +1,6 @@
 #include "main.h"
 #include "parse.h"
 #include "print.h"
-#include "ast.h"
 #include "predef.h"
 #include "gen.h"
 #include <stdarg.h>
