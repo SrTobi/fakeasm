@@ -1,5 +1,8 @@
 #include "parse.h"
 
+llist_decl(Label*, LabelList);
+llist_decl(struct Function*, FunList);
+
 FunList funstack = llist_empty;
 LabelList curlabels = llist_empty;
 

@@ -51,7 +51,6 @@ array_decl(Variable*, VarArray);
 strmap_decl(Variable*, VarMap);
 llist_decl(Variable*, VarList);
 strmap_decl(struct Function*, FunMap);
-llist_decl(struct Function*, FunList);
 array_decl(Argument, ArgArray);
 
 typedef struct Statement{
@@ -62,7 +61,6 @@ typedef struct Statement{
 } Statement;
 
 array_decl(Statement*, StatementArray);
-llist_decl(Label*, LabelList);
 strmap_decl(Label*, LabelMap);
 
 typedef struct Function {
