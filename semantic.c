@@ -19,9 +19,7 @@ Function* resolve_funcall(Function* fun, const char* name)
 Variable* make_variable(Function*fun, const char* name)
 {   
     // make var
-    Variable *var = malloc(sizeof(*var));
-    var->name = name;
-    var->type = vt_int;
+    Variable *var = new_variable(name, vt_int);
     fun->vars = llist_prepend(var, fun->vars);
     return var;
 }

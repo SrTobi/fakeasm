@@ -2,26 +2,15 @@
 
 Function* new_internal_func(const char* name, Function* context)
 {
-    Function* f = malloc(sizeof(Function));
-    f->name = name;
-    f->funcs = llist_empty;
-    f->labels = new_strmap(Label*, LabelMap);
-    f->statms = llist_empty;
-    f->vars = llist_empty;
-    f->params = llist_empty;
+    Function* f = new_function(name, context);
     f->internal = true;
-    f->context = context;
-    
-    context->funcs = llist_prepend(f, context->funcs);
     
     return f;
 }
 
 void add_param(Function* fun, const char* name, VarType type)
 {
-    Variable* var = malloc(sizeof(*var));
-    var->name = name;
-    var->type = type;
+    Variable* var = new_variable(name, type);
     
     fun->vars = llist_prepend(var, fun->vars);
     fun->params = llist_prepend(var, fun->params);

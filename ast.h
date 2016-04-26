@@ -3,6 +3,7 @@
 
 
 #include <string.h>
+#include <stdbool.h>
 
 #include "llist.h"
 #include "strmap.h"
@@ -56,6 +57,7 @@ typedef struct Statement{
     bool wasexpr;
 } Statement;
 
+
 llist_decl(Statement*, StatementList);
 llist_decl(Label*, LabelList);
 strmap_decl(Label*, LabelMap);
@@ -71,7 +73,9 @@ typedef struct Function {
     bool internal;
 } Function;
 
-
-
+Function* new_function(const char* name, Function* context);
+Statement* new_statement(const char* funname, ArgList args);
+Variable* new_variable(const char* name, VarType type);
+Label* new_label(const char* name);
 
 #endif

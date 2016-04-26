@@ -5,33 +5,15 @@ LabelList curlabels = llist_empty;
 
 void push_function(const char* name, VarList params)
 {
-    Function* f = malloc(sizeof(Function));
-    f->name = name;
-    f->funcs = llist_empty;
-    f->labels = new_strmap(Label*, LabelMap);
-    f->statms = llist_empty;
-    f->vars = params;
-    f->params = params;
-    f->internal = false;
-
-
     Function* context = NULL;
     if(funstack != llist_empty)
     {
         context = llist_head(funstack);
-        
-        Function* otherf;
-        llist_foreach(FunList, context->funcs, otherf)
-        {
-            if(strcmp(otherf->name, name) == 0)
-            {
-                yyerrerf("A function with the name '%s' has already been defined in function '%s'.", name, context->name);
-            }
-        }
-        
-        context->funcs = llist_prepend(f, context->funcs);
     }
-    f->context = context;
+    
+    Function* f = new_function(name, context);
+    f->vars = params;
+    f->params = params;
     
     funstack = llist_prepend(f, funstack);
 }
@@ -64,9 +46,7 @@ void push_label(const char* name)
         }
     }*/    
     
-    Label* l = malloc(sizeof(*l));
-    l->name = name;
-    l->statm = NULL;
+    Label* l = new_label(name);
     curlabels = llist_prepend(l, curlabels);
     
     strmap_insert(curf->labels, name, l);
@@ -75,27 +55,18 @@ void push_label(const char* name)
 
 Variable* create_variable(const char* name)
 {
-    Variable* v = malloc(sizeof(*v));
-    v->name = name;
-    v->type = vt_int;
-    return v;
+    return new_variable(name, vt_int);
 }
 
 Variable* create_parameter(const char* name, VarType vartype)
 {
-    Variable* v = create_variable(name);
-    v->type = vartype;
-    return v;
+    return new_variable(name, vartype);
 }
 
 Statement* push_funcall(const char* funname, ArgList args)
 {
     Function* curf = cur_func();
-    Statement* statm = malloc(sizeof(*statm));
-    statm->args = args;
-    statm->fun = NULL;
-    statm->funname = funname;
-    statm->wasexpr = false;
+    Statement* statm = new_statement(funname, args);
     
     // set all labels and pop
     while(curlabels != llist_empty)
