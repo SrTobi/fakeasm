@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
         yyin = myfile;
     }
 
-    push_function("root", llist_empty);
+    push_function("main", llist_empty);
 	Function* root = cur_func();
     
     register_internals(root);
@@ -32,6 +32,8 @@ int main(int argc, char** argv) {
 
     ast_analyze(root);
     print_function(root, pf_all);
+    
+    build_firm_graph(root);
     
     return 0;
 }
