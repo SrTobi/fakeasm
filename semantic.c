@@ -45,7 +45,7 @@ bool ast_resolve_funcalls(Function* fun)
 {
     bool ok = true;
     Statement* s;
-    llist_foreach(StatementList, fun->statms, s)
+    array_foreach(fun->statms, Statement*, s)
     {
         // resolve funcalls
         s->fun = resolve_funcall(fun, s->funname);

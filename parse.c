@@ -76,7 +76,7 @@ Statement* push_funcall(const char* funname, ArgList args)
     }
     
     // register
-    curf->statms = llist_prepend(statm, curf->statms);
+    array_push(curf->statms, Statement*, statm);
     return statm;
 }
 

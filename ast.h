@@ -7,6 +7,7 @@
 
 #include "llist.h"
 #include "strmap.h"
+#include "array.h"
 
 typedef enum {
     vt_int,
@@ -58,8 +59,7 @@ typedef struct Statement{
     bool wasexpr;
 } Statement;
 
-
-llist_decl(Statement*, StatementList);
+array_decl(Statement*, StatementArray);
 llist_decl(Label*, LabelList);
 strmap_decl(Label*, LabelMap);
 
@@ -69,7 +69,7 @@ typedef struct Function {
     VarList params;
     VarList vars;
     FunMap funcs;
-    StatementList statms;
+    StatementArray statms;
     LabelMap labels;
     bool internal;
 } Function;

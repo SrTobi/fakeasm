@@ -10,7 +10,7 @@ Function* new_function(const char* name, Function* context)
     f->name = name;
     f->funcs = new_strmap(Function*, FunMap);
     f->labels = new_strmap(Label*, LabelMap);
-    f->statms = llist_empty;
+    f->statms = array_new(Statement*, 0);
     f->vars = llist_empty;
     f->params = llist_empty;
     f->internal = false;

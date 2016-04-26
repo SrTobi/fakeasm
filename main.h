@@ -12,7 +12,7 @@ FILE *yyin;
 void yyerrerf(const char*s, ...);
 void yyerror(const char *s);
 
-
+#include "array.h"
 #include "ast.h"
 
 void ast_analyze(Function* fun);

@@ -73,7 +73,7 @@ void print_function(Function* fun, unsigned int flags)
     {
         printf("-Statements:\n");
         Statement* s;
-        llist_foreach(StatementList, llist_reverse(fun->statms), s)
+        array_foreach(fun->statms, Statement*, s)
         {
             printf("    %s", s->funname);
             if(s->fun == NULL)
