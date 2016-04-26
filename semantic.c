@@ -19,18 +19,15 @@ Variable* make_variable(Function*fun, const char* name)
 {   
     // make var
     Variable *var = new_variable(name, vt_int);
-    fun->vars = llist_prepend(var, fun->vars);
+    strmap_insert(fun->vars, name, var);
     return var;
 }
 
 Variable* resolve_variable(Function* fun, const char* name)
 {
-    Variable* var;
-    llist_foreach(VarList, fun->vars, var)
-    {
-        if(strcmp(var->name, name) == 0)
-            return var;
-    }
+    Variable** var;
+    if((var = strmap_find(fun->vars, name)) != NULL)
+        return *var;
     
     return NULL;
 }
@@ -56,21 +53,20 @@ bool ast_resolve_funcalls(Function* fun)
         } else {
             
             // resolve arguments
-            int argnum = llist_size(s->args);
-            int paramnum = llist_size(s->fun->params);
-            if(argnum != paramnum)
+            int args_count = array_len(s->args);
+            int param_count = array_len(s->fun->params);
+            if(args_count != param_count)
             {
                 ok = false;
-                printf("Error: Function call to '%s' in function '%s'  has not the correct number of arguments: %i provided, %i expected\n", s->funname, fun->name, argnum, paramnum);
+                printf("Error: Function call to '%s' in function '%s'  has not the correct number of arguments: %i provided, %i expected\n", s->funname, fun->name, args_count, param_count);
             }
             
-            ArgList ap = s->args;
-            VarList pp = s->fun->params;
-            int i = argnum;
-            while(ap != llist_empty)
+            Argument* arg = array_begin(s->args);
+            Variable** pp = array_begin(s->fun->params);
+            int i = 1;
+            while(arg != array_end(s->args))
             {
-                Argument* arg = &llist_head(ap);
-                Variable* param = llist_head(pp);
+                Variable* param = *pp;
                 
                 if(arg->wasexpr && param->type != vt_outint)
                 {
@@ -173,9 +169,9 @@ bool ast_resolve_funcalls(Function* fun)
                 
                 
                 
-                ap = llist_tail(ap);
-                pp = llist_tail(pp);
-                --i;
+                ++pp;
+                ++arg;
+                ++i;
             }
         }
     }

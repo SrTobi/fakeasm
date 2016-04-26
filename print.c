@@ -1,28 +1,50 @@
 #include "print.h"
 
+void print_var(Variable* var, bool printtypes)
+{
+    printf("%s", var->name);
+    if(printtypes)
+    {
+        switch(var->type)
+        {
+        case vt_label: printf("(label)");
+                break;
+        case vt_outint: printf("(out)");
+                break;
+        case vt_int:
+        default:
+            break;
+        }
+    }
+}
 
-void print_vars(VarList vars, bool printtypes)
+void print_vararray(VarArray vars, bool printtypes)
 {
     Variable* var;
-    llist_foreach(VarList, llist_reverse(vars), var)
+    bool first = true;
+    array_foreach(vars, Variable*, var)
     {
-        printf("%s", var->name);
-        if(printtypes)
-        {
-            switch(var->type)
-            {
-            case vt_label: printf("(label)");
-                    break;
-            case vt_outint: printf("(out)");
-                    break;
-            case vt_int:
-            default:
-                break;
-            }
-        }
-        
-        if(llist_tail(_idx) != llist_empty)
+        if(first)
+            first = false;
+        else
             printf(", ");
+            
+        print_var(var, printtypes);
+    }
+}
+
+void print_varmap(VarMap vars, bool printtypes)
+{
+    Variable* var;
+    bool first = true;
+    strmap_foreach(vars, Variable*, var)
+    {
+        if(first)
+            first = false;
+        else
+            printf(", ");
+            
+        print_var(var, printtypes);
     }
 }
 
@@ -48,7 +70,7 @@ void print_function(Function* fun, unsigned int flags)
         printf("Function %s:", fun->name);
     }
     // print params
-    print_vars(fun->params, flags & pf_param_types);
+    print_vararray(fun->params, flags & pf_param_types);
     printf("\n");
     
     if(flags & pf_labels)
@@ -65,7 +87,7 @@ void print_function(Function* fun, unsigned int flags)
     if(flags & pf_variables)
     {
         printf("-Variables:  ");
-        print_vars(fun->vars, flags & pf_var_types);
+        print_varmap(fun->vars, flags & pf_var_types);
         printf("\n");
     }
     
@@ -82,7 +104,7 @@ void print_function(Function* fun, unsigned int flags)
             }
             
             Argument a;
-            llist_foreach(ArgList, llist_reverse(s->args), a)
+            array_foreach(s->args, Argument, a)
             {
                 printf("  ");
                 switch(a.type)

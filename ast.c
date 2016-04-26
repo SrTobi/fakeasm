@@ -11,8 +11,8 @@ Function* new_function(const char* name, Function* context)
     f->funcs = new_strmap(Function*, FunMap);
     f->labels = new_strmap(Label*, LabelMap);
     f->statms = array_new(Statement*, 0);
-    f->vars = llist_empty;
-    f->params = llist_empty;
+    f->vars = new_strmap(Variable*, VarMap);
+    f->params = array_new(Variable*, 0);
     f->internal = false;
     f->context = context;
     
@@ -27,7 +27,20 @@ Function* new_function(const char* name, Function* context)
     return f; 
 }
 
-Statement* new_statement(const char* funname, ArgList args)
+void function_add_parameter(Function* context, Variable* var)
+{
+    assert(array_len(context->params) == strmap_len(context->vars));
+    
+    if(strmap_find(context->vars, var->name))
+    {
+        yyerrerf("A variable with the name '%s' has already been defined in function '%s'.", var->name, context->name);
+    }
+    
+    strmap_insert(context->vars, var->name, var);
+    array_push(context->params, Variable*, var);
+}
+
+Statement* new_statement(const char* funname, ArgArray args)
 {
     Statement* statm = malloc(sizeof(*statm));
     statm->args = args;

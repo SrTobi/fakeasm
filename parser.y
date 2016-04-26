@@ -8,7 +8,7 @@
 	char *sval;
 	Variable* variable;
 	VarList	varlist;
-	ArgList arglist;
+	ArgArray argarray;
 	Argument argument;
 }
 
@@ -44,15 +44,15 @@ funcall:
 	funcid arglist EOL	{ push_funcall($1, $2); }
 	;
 
-%type <arglist> arglist args;
+%type <argarray> arglist args;
 arglist:
 	args
 	|		{ $$ = llist_empty; }
 	;
 
 args:
-	args COMMA arg		{ $$ = llist_prepend($3, $1); }
-	| arg				{ $$ = llist_new(ArgList, $1); }
+	args COMMA arg		{ array_push($1, Argument, $3); $$ = $1; }
+	| arg				{ $$ = array_new(Argument, 1); $$[0] = $1; }
 	;
 
 %type <argument> arg expr atomexpr;

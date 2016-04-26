@@ -47,15 +47,17 @@ typedef struct {
 } Argument;
 
 struct Function;
+array_decl(Variable*, VarArray);
+strmap_decl(Variable*, VarMap);
 llist_decl(Variable*, VarList);
 strmap_decl(struct Function*, FunMap);
 llist_decl(struct Function*, FunList);
-llist_decl(Argument, ArgList);
+array_decl(Argument, ArgArray);
 
 typedef struct Statement{
     const char *funname;
     struct Function* fun;
-    ArgList args;
+    ArgArray args;
     bool wasexpr;
 } Statement;
 
@@ -66,8 +68,8 @@ strmap_decl(Label*, LabelMap);
 typedef struct Function {
     const char *name;
     struct Function* context;
-    VarList params;
-    VarList vars;
+    VarArray params;
+    VarMap vars;
     FunMap funcs;
     StatementArray statms;
     LabelMap labels;
@@ -75,7 +77,8 @@ typedef struct Function {
 } Function;
 
 Function* new_function(const char* name, Function* context);
-Statement* new_statement(const char* funname, ArgList args);
+void function_add_parameter(Function* context, Variable* var);
+Statement* new_statement(const char* funname, ArgArray args);
 Variable* new_variable(const char* name, VarType type);
 Label* new_label(const char* name);
 

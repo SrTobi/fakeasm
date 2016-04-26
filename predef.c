@@ -12,8 +12,7 @@ void add_param(Function* fun, const char* name, VarType type)
 {
     Variable* var = new_variable(name, type);
     
-    fun->vars = llist_prepend(var, fun->vars);
-    fun->params = llist_prepend(var, fun->params);
+    function_add_parameter(fun, var);
 }
 
 void register_internals(Function* ctx)

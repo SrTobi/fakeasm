@@ -8,6 +8,7 @@
 #define _strmap_decltype(type)              struct { set* _innerset; _strmap_item(type)* _item_dummy; type* _typeptr_dummy; }
 #define strmap_decl(type, name)             typedef _strmap_decltype(type) name;
 #define new_strmap(type, maptype)           ((maptype){ new_set(&_strmap_item_cmp, 64), NULL, (type*)NULL})
+#define strmap_len(map)                     set_count((map)._innerset)
 
 #define strmap_insert(map, id, elem)        { \
                                                     char _item_buffer[sizeof(*(map)._item_dummy)]; \

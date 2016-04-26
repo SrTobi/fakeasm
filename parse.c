@@ -3,6 +3,15 @@
 FunList funstack = llist_empty;
 LabelList curlabels = llist_empty;
 
+static void add_all_params(VarList params, Function* fun)
+{
+    if(params == llist_empty)
+        return;
+
+    add_all_params(llist_tail(params), fun);
+    function_add_parameter(fun, llist_head(params));
+}
+
 void push_function(const char* name, VarList params)
 {
     Function* context = NULL;
@@ -12,8 +21,8 @@ void push_function(const char* name, VarList params)
     }
     
     Function* f = new_function(name, context);
-    f->vars = params;
-    f->params = params;
+    
+    add_all_params(params, f);
     
     funstack = llist_prepend(f, funstack);
 }
@@ -63,7 +72,7 @@ Variable* create_parameter(const char* name, VarType vartype)
     return new_variable(name, vartype);
 }
 
-Statement* push_funcall(const char* funname, ArgList args)
+Statement* push_funcall(const char* funname, ArgArray args)
 {
     Function* curf = cur_func();
     Statement* statm = new_statement(funname, args);
@@ -111,8 +120,9 @@ Argument tmpargument()
 Argument create_unary_arg(const char* funname, Argument input)
 {
     Argument output = tmpargument();
-    ArgList arguments = llist_new(ArgList, input);
-    arguments = llist_prepend(output, arguments);
+    ArgArray arguments = array_new(Argument, 2);
+    arguments[0] = input;
+    arguments[1] = output;
     Statement* s = push_funcall(funname, arguments);
     s->wasexpr = true;
     
@@ -123,9 +133,10 @@ Argument create_unary_arg(const char* funname, Argument input)
 Argument create_binary_arg(const char* funname, Argument left, Argument right)
 {
     Argument output = tmpargument();
-    ArgList arguments = llist_new(ArgList, left);
-    arguments = llist_prepend(right, arguments);
-    arguments = llist_prepend(output, arguments);
+    ArgArray arguments = array_new(Argument, 3);
+    arguments[0] = left;
+    arguments[1] = right;
+    arguments[2] = output;
     Statement* s = push_funcall(funname, arguments);
     s->wasexpr = true;
     
