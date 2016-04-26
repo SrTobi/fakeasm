@@ -6,11 +6,10 @@ Function* resolve_funcall(Function* fun, const char* name)
     if(fun == NULL)
         return NULL;
     
-    Function* inner;
-    llist_foreach(FunList, fun->funcs, inner)
+    Function** inner;
+    if((inner = strmap_find(fun->funcs, name)) != NULL)
     {
-        if(strcmp(inner->name, name) == 0)
-            return inner;
+        return *inner;
     }
     
     return resolve_funcall(fun->context, name);
@@ -182,7 +181,7 @@ bool ast_resolve_funcalls(Function* fun)
     }
     
     Function* inner;
-    llist_foreach(FunList, fun->funcs, inner)
+    strmap_foreach(fun->funcs, Function*, inner)
     {
         bool success = ast_resolve_funcalls(inner);
         if(!success)

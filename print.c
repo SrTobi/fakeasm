@@ -103,7 +103,7 @@ void print_function(Function* fun, unsigned int flags)
     {
         printf("\n\n");
         Function* f;
-        llist_foreach(FunList, fun->funcs, f)
+        strmap_foreach(fun->funcs, Function*, f)
         {
             if(!f->internal || (flags & pf_print_internals))
                 print_function(f, flags);

@@ -8,7 +8,7 @@ Function* new_function(const char* name, Function* context)
 {
     Function* f = malloc(sizeof(*f));
     f->name = name;
-    f->funcs = llist_empty;
+    f->funcs = new_strmap(Function*, FunMap);
     f->labels = new_strmap(Label*, LabelMap);
     f->statms = llist_empty;
     f->vars = llist_empty;
@@ -18,16 +18,10 @@ Function* new_function(const char* name, Function* context)
     
     if(context != NULL)
     {
-        Function* otherf;
-        llist_foreach(FunList, context->funcs, otherf)
-        {
-            if(strcmp(otherf->name, name) == 0)
-            {
-                yyerrerf("A function with the name '%s' has already been defined in function '%s'.", name, context->name);
-            }
-        }
+        if(strmap_find(context->funcs, name) != NULL)
+            yyerrerf("A function with the name '%s' has already been defined in function '%s'.", name, context->name);
         
-        context->funcs = llist_prepend(f, context->funcs);
+        strmap_insert(context->funcs, name, f);
     }
     
     return f; 

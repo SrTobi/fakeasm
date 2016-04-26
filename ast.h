@@ -47,6 +47,7 @@ typedef struct {
 
 struct Function;
 llist_decl(Variable*, VarList);
+strmap_decl(struct Function*, FunMap);
 llist_decl(struct Function*, FunList);
 llist_decl(Argument, ArgList);
 
@@ -67,7 +68,7 @@ typedef struct Function {
     struct Function* context;
     VarList params;
     VarList vars;
-    FunList funcs;
+    FunMap funcs;
     StatementList statms;
     LabelMap labels;
     bool internal;
